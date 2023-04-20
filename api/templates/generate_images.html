@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <div class="container">
+    <h1>Generate Image</h1>
+    <form id="generate-form" method="POST" action="{% url 'generate_images' %}">
+      {% csrf_token %}
+      <div class="form-group">
+        <label for="prompt">Prompt:</label>
+        <textarea class="form-control" id="prompt" name="prompt" rows="3" required></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Generate</button>
+    </form>
+    <div id="result"></div>
+  </div>
+{% endblock %}
+
+{% block script %}
+  <!-- Bootstrap bundle for popper.js and bootstrap js -->
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper-base.min.js"
+    integrity="sha384-fgVZSNQ8WnOXmFhqB2mX4zxk4c1eYt16QLvyulNXK/iqr/kDZt8OOZq3ijj8tY4V"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <!-- Submit form data using AJAX -->
+  <script>
+    $(function() {
+      $('#generate-form').submit(function(event) {
+        event.preventDefault();
+        var form = $(this);
+        var url = form.attr('action');
+        var formData = new FormData(this);
+        $.ajax({
+          type: 'POST',
+          url: url,
+          data: formData,
+          contentType: false,
+          processData: false,
+          beforeSend: function() {
+            $('#result').html('<div class="alert alert-info">Generating image, please wait...</div>');
+          },
+          success: function(data) {
+            $('#result').html('<img src="' + data.data[0] + '" class="img-fluid">');
+          },
+          error: function(jqXHR, textStatus, errorThrown) {
+            $('#result').html('<div class="alert alert-danger">' + jqXHR.responseText + '</div>');
+          }
+        });
+      });
+    });
+  </script>
+{% endblock %}
