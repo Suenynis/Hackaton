@@ -1,6 +1,6 @@
 import openai
 
-def generate_text(prompt):
+'''def generate_text(prompt):
     openai.api_key = "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"
     model_engine = "davinci"
     response = openai.Completion.create(
@@ -11,4 +11,4 @@ def generate_text(prompt):
         stop=None,
         temperature=0.5,
     )
-    return response.choices[0].text.strip()
+    return response.choices[0].text.strip()'''

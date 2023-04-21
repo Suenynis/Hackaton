@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Generate Text</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+    <h1>Generate Text</h1>
+    <button id="generate-btn">Generate Text</button>
+    <div id="text-container"></div>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            // attach event listener to the button
+            $('#generate-btn').click(function() {
+                // make an AJAX request to the server
+                $.ajax({
+                    url: '/',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: {},
+                    success: function(response) {
+                        // update the text container with the generated text
+                        $('#text-container').text(response.text);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

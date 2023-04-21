@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import render
 import requests
-from .gpt import generate_text
+#from .gpt import generate_text
 
 
 def generate_images(request):
@@ -45,3 +45,16 @@ def generate_text_view(request):
         generated_text = generate_text(prompt)
         return JsonResponse({'generated_text': generated_text})
     return render(request, 'gpt.html')
+
+
+def generate_text(request):
+    if request.META.get('HTTP_X_REQUESTED_WITH') == 'XMLHttpRequest' and request.method == 'POST':
+        # generate the text
+        text = 'This is the generated text.'
+
+        # send the text back to the client
+        data = {
+            'text': text
+        }
+        return JsonResponse(data)
+    return render(request, 'generate_text.html')
